@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify
-
 from app.views.users import post_user, update_user, get_users, get_user, delete_user
-
 from app.views import helper
+from app.views.tasks import post_task, get_tasks, update_task, delete_task
+from app.views.helper import token_required
 
 
 routes = Blueprint('main_routes', __name__)
@@ -41,5 +41,29 @@ def remove_user(id):
 @routes.route('/auth', methods=['POST'])
 def authenticate():
     return helper.auth()
+
+
+@routes.route('/tasks', methods=['POST'])
+@token_required
+def create_task(current_user):
+    return post_task(current_user)
+
+# Listar
+@routes.route('/tasks', methods=['GET'])
+@token_required
+def list_my_tasks(current_user):
+    return get_tasks(current_user)
+
+# Atualizar (Ex: Marcar como concluída)
+@routes.route('/tasks/<int:id>', methods=['PUT'])
+@token_required
+def edit_task(current_user, id):
+    return update_task(current_user, id)
+
+# Excluir
+@routes.route('/tasks/<int:id>', methods=['DELETE'])
+@token_required
+def remove_task(current_user, id):
+    return delete_task(current_user, id)
 
 

@@ -1,7 +1,7 @@
 import datetime
 from app import db, ma
 
-"""Definição da classe/tabela dos usuários e seus campos"""
+
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -10,7 +10,8 @@ class Users(db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.datetime.now)
 
-
+    # AJUSTE AQUI: Remova o 'Tasks' (string) se o erro persistir,
+    # mas o problema real costuma ser a importação no __init__.py
     tasks = db.relationship('Tasks', backref='author', lazy=True)
 
     def __init__(self, username, password, name, email):
@@ -19,13 +20,17 @@ class Users(db.Model):
         self.name = name
         self.email = email
 
-"""Definindo o schema do Marshmallow para facilitar a utilização de json"""
+
 class UsersSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Users
         load_instance = True
         sqla_session = db.session
         include_relationships = True
+
+    # Use o nome da classe do Schema de tarefas como string
+    tasks = ma.Nested("TasksSchema", many=True)
+
 
 user_schema = UsersSchema()
 users_schema = UsersSchema(many=True)

@@ -11,7 +11,16 @@ from ..models.users import Users
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.args.get('token')
+        token = None
+
+        # Verifica se o cabeçalho 'Authorization' está presente
+        if 'Authorization' in request.headers:
+            auth_header = request.headers['Authorization']
+            # O formato é "Bearer <token>", então dividimos a string
+            try:
+                token = auth_header.split(" ")[1]
+            except IndexError:
+                return jsonify({'message': 'Formato do token inválido', 'data': {}}), 401
 
         if not token:
             return jsonify({'message': 'Token is missing', 'data': {}}), 401
@@ -19,8 +28,14 @@ def token_required(f):
         try:
             data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
             current_user = user_by_username(username=data['username'])
-        except Exception as e:
-            return jsonify({'message': 'Token is invalid or expired', 'data': {}}), 401
+
+            if not current_user:
+                return jsonify({'message': 'Usuário não encontrado para este token', 'data': {}}), 401
+
+        except jwt.ExpiredSignatureError:
+            return jsonify({'message': 'Token expirado', 'data': {}}), 401
+        except Exception:
+            return jsonify({'message': 'Token inválido', 'data': {}}), 401
 
         return f(current_user, *args, **kwargs)
 

@@ -13,16 +13,14 @@ def create_app():
     db.init_app(app)
     ma.init_app(app)
 
-
+    # Importe os módulos (arquivos) e não as classes diretamente aqui
     from .models import tasks, users
 
     with app.app_context():
-
         db.create_all()
 
     from .routes.routes import routes
     app.register_blueprint(routes)
 
     return app
-
 
