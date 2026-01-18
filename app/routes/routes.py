@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify
 
 from app.views.users import post_user, update_user, get_users, get_user, delete_user
 
+from app.views import helper
+
 
 routes = Blueprint('main_routes', __name__)
 
@@ -34,4 +36,10 @@ def search_one_user(id):
 @routes.route('/users/<int:id>', methods=['DELETE'])
 def remove_user(id):
     return delete_user(id)
+
+
+@routes.route('/auth', methods=['POST'])
+def authenticate():
+    return helper.auth()
+
 

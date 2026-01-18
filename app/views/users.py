@@ -107,3 +107,11 @@ def delete_user(id):
         db.session.rollback()
         print(f"Erro ao eliminar: {e}")
         return jsonify({'message': 'fail', 'error': str(e)}), 500
+
+
+def user_by_username(username):
+    try:
+        return Users.query.filter_by(username=username).first()
+    except Exception as e:
+        print(f"Erro ao buscar usuário: {e}")
+        return None
