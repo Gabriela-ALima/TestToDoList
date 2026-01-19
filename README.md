@@ -3,10 +3,12 @@
 Este projeto é uma API RESTful para gerenciamento de tarefas, desenvolvida com Python e Flask, utilizando arquitetura profissional (Factory Pattern), segurança baseada em Tokens e relacionamentos entre entidades.
 
 ## 🛠️ O que foi implementado recentemente
-- [x] **Autenticação JWT (Bearer Token):** Proteção de rotas com validação de token no cabeçalho `Authorization`.
-- [x] **Relacionamentos SQL:** Vínculo de integridade entre `Users` e `Tasks` (Um usuário para muitas tarefas).
-- [x] **Marshmallow Nesting:** Serialização avançada que permite visualizar os detalhes das tarefas dentro do perfil do usuário em uma única consulta.
-- [x] **Segurança de Nível de Registro:** Filtros de consulta que garantem que um usuário só possa visualizar e manipular suas próprias tarefas.
+## 🛠️ O que foi implementado recentemente
+- [x] **Swagger UI (Flask-RestX):** Documentação interativa automática da API.
+- [x] **Autenticação JWT (Bearer Token):** Proteção de rotas com `flask-jwt-extended`.
+- [x] **Relacionamentos SQL:** Vínculo de integridade entre `User` e `Tasks` (1:N).
+- [x] **Marshmallow Nesting:** Serialização que permite visualizar tarefas dentro do perfil do usuário.
+- [x] **Testes Automatizados:** Suíte de testes com `Pytest` cobrindo o CRUD e Autenticação.
 
 ## 🔐 Segurança e Autenticação
 A API utiliza um fluxo de autenticação moderno e seguro:
@@ -34,19 +36,14 @@ A API utiliza um fluxo de autenticação moderno e seguro:
 
 ## 📂 Estrutura de Pastas Atualizada
 ```text
-app/
-├── models/          # Modelos de Dados (SQLAlchemy) e Schemas (Marshmallow)
-│   ├── tasks.py     # Definição da tabela Tasks e TasksSchema
-│   └── users.py     # Definição da tabela Users e UsersSchema (com ma.Nested)
-├── routes/          # Gerenciamento de Blueprints
-│   └── routes.py    # Definição centralizada de rotas e métodos
-├── views/           # Lógica de negócio (Controllers)
-│   ├── helper.py    # Decorator @token_required e lógica de auth
-│   ├── users.py     # Funções de manipulação de usuários
-│   └── tasks.py     # Funções de CRUD de tarefas (Listar, Criar, Deletar)
-├── __init__.py      # Factory da aplicação e Registro de Blueprints
-config.py            # Configurações de Banco de Dados e SECRET_KEY
-run.py               # Ponto de entrada para iniciar o servidor Flask            # Ponto de entrada do sistema
+├── app/
+│   ├── models/          # Modelos SQLAlchemy (User, Tasks)
+│   ├── routes/          # Namespaces e Definições do Flask-RestX
+│   ├── __init__.py      # Factory Pattern e Configuração da App
+├── tests/               # Testes automatizados (conftest.py, test_tasks.py)
+├── config.py            # Variáveis de ambiente e configuração de DB
+├── requirements.txt     # Dependências do projeto (pip)
+└── run.py               # Ponto de entrada da aplicação
 
 ##  Tecnologias Utilizadas
 * **Python 3.x**
