@@ -34,7 +34,7 @@ def create_app():
         description="API com autenticação JWT e CRUD completo",
         authorizations=authorizations,
         security="Bearer",
-        doc="/apidocs"
+        doc="/swagger"
     )
 
     from .models import User, tasks
