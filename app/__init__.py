@@ -4,6 +4,7 @@ from flask_marshmallow import Marshmallow
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
 from config import Config
+from flask_cors import CORS
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -13,6 +14,8 @@ jwt = JWTManager()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    CORS(app)
 
     db.init_app(app)
     ma.init_app(app)
@@ -43,8 +46,8 @@ def create_app():
 
     from .routes.routes import login_ns, user_ns, task_ns
 
-    api.add_namespace(login_ns, path='/login')
-    api.add_namespace(user_ns, path='/users')
+    api.add_namespace(login_ns, path='/usuarios/logar')
+    api.add_namespace(user_ns, path='/usuarios')
     api.add_namespace(task_ns, path='/tasks')
 
     return app
