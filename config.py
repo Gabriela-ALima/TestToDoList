@@ -2,9 +2,7 @@ import os
 import random
 import string
 
-
-random_key = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(24))
-
+key = '12356'
 
 class Config:
     DEBUG = False
@@ -16,5 +14,5 @@ class Config:
     SQLALCHEMY_DATABASE_URI = database_url or "sqlite:///database.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    SECRET_KEY = os.getenv("SECRET_KEY", random_key)
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", random_key)
+    SECRET_KEY = os.getenv("SECRET_KEY", key)
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", key)
