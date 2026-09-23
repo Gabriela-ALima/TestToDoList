@@ -1,5 +1,18 @@
+import os
+import random
+import string
+
+key = '12356'
+
 class Config:
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///E:/ProjetosPython/TestToDoList/database.db'
+    DEBUG = False
+
+    database_url = os.getenv("DATABASE_URL")
+    if database_url and database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+    SQLALCHEMY_DATABASE_URI = database_url or "sqlite:///database.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = 'c696800d0246603a1168916d8a63207c'
+
+    SECRET_KEY = os.getenv("SECRET_KEY", key)
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", key)
